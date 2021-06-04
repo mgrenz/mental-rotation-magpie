@@ -22,15 +22,8 @@
 const intro = magpieViews.view_generator("intro", {
   trials: 1,
   name: 'intro',
-  // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside
-  text: `This is a sample introduction view.
-            <br />
-            <br />
-            The introduction view welcomes the participant and gives general information
-            about the experiment. You are in the <strong>${coin}</strong> group.
-            <br />
-            <br />
-            This is a minimal experiment with one forced choice view. It can serve as a starting point for programming your own experiment.`,
+  // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside; <br /> fügt Absatz hinzu
+  text: `Welcome to the mental rotation experiment and thank you for your participation.`,
   buttonText: 'begin the experiment'
 });
 
@@ -39,11 +32,26 @@ const instructions = magpieViews.view_generator("instructions", {
   trials: 1,
   name: 'instructions',
   title: 'General Instructions',
-  text: `This is a sample instructions view.
+  text: `This experiment investigates the ability of mental rotation.
             <br />
             <br />
-            Tell your participants what they are to do here.`,
+            In short time you will be presented with pictures of 2 representations of rotated 3-dimensional objects. Your task will be to judge whether the two representations depict the same or different objects. To indicate your choice you are asked to press the respective key on your keyboard, 'f' indicating the two objects are the same, 'j' indicating the two representations belong to different objects. (Don't worry, there will be a reminder on the trial screens.)
+            <br />
+            <br />
+            The main trial will start after a short practice session. In total you will see 60 pictures, 12 in the practice session and 48 in the main trial. Please remove any distractions from your surrounding.
+            <br />
+            <br />
+            Try to be as fast and accurate as possible.`,
   buttonText: 'go to trials'
+});
+
+const begin = magpieViews.view_generator("begin", {
+  trials: 1,
+  name: 'begin',
+  title: 'Main trial',
+  // If you use JavaScripts Template String `I am a Template String`, you can use HTML <></> and javascript ${} inside; <br /> fügt Absatz hinzu
+  text: `By clicking the button below you will start the main trial. Your task is again to judge whether the two representations depict the same ('f') or different ('j') objects.`,
+  buttonText: 'begin the experiment'
 });
 
 
@@ -101,19 +109,24 @@ const thanks = magpieViews.view_generator("thanks", {
 * https://magpie-ea.github.io/magpie-docs/01_designing_experiments/01_template_views/#trial-views
 */
 
+// key-press implementation
 
-// Here, we initialize a normal forced_choice view
-const forced_choice_2A = magpieViews.view_generator("forced_choice", {
-  // This will use all trials specified in `data`, you can user a smaller value (for testing), but not a larger value
-  trials: trial_info.forced_choice.length,
-  // name should be identical to the variable name
-  name: 'forced_choice_2A',
-  data: trial_info.forced_choice,
-  // you can add custom functions at different stages through a view's life cycle
-  // hook: {
-  //     after_response_enabled: check_response
-  // }
+
+const key_press_main = magpieViews.view_generator("key_press", {
+  trials: 48,
+  name: 'key_press_task',
+  data: trial_info.key_press,
+  pause: 250,
 });
+
+const key_press_practice = magpieViews.view_generator("key_press", {
+  trials: 12,
+  name: 'key_press_practice',
+  data: trial_info.key_press,
+  pause: 250,
+});
+
+
 
 // There are many more templates available:
 // forced_choice, slider_rating, dropdown_choice, testbox_input, rating_scale, image_selection, sentence_choice,
